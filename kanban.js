@@ -17,6 +17,10 @@ export default class Kanban {
           }
         );
 
+        if (!column) {
+            throw new Error(`Error: The column ${columnId} doesn't exists!`);
+        }
+
         const  task = {
             taskId: Math.floor(Math.random() * 100000),
             content: content
