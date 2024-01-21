@@ -35,6 +35,10 @@ function fillUpTaskBoxes(columnId) {
 todoCards.innerHTML = fillUpTaskBoxes(0);
 pendingCards.innerHTML = fillUpTaskBoxes(1);
 completedCards.innerHTML = fillUpTaskBoxes(2);
+
+//Kanban.deletTask(63861);
+//console.log("second delete");
+Kanban.deletTask(15523);
 //Kanban.insertTasks(0, "Leslie Feist concerts");
 
 //console.log(todoCards.innerHTML);

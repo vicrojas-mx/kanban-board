@@ -26,8 +26,7 @@ export default class Kanban {
             content: content
         };
         column.tasks.push(task);
-        localStorage.setItem("data", JSON.stringify(data));
-        
+        save(data);
         return task;
     }
 
@@ -36,7 +35,16 @@ export default class Kanban {
     }
 
     static deletTask(taskId){
-
+        const data = read();
+        for(const column of data) {
+            let task = column.tasks.find((element, idx) => {
+                return element.taskId == taskId
+            });
+            if (task) {
+                column.tasks.splice(column.tasks.indexOf(task), 1);
+            }
+        } 
+        save(data);
     }
 
     static getAllTasks() {
@@ -56,6 +64,6 @@ function read() {
 }
 
 
-function save() {
-
+function save(data) {
+    localStorage.setItem("data", JSON.stringify(data));
 }
