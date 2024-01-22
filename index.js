@@ -1,11 +1,9 @@
 import Kanban from "./kanban.js";
 
-console.log("Fetching the data");
-console.log(Kanban.getAllTasks());
-const todoCards = document.querySelector(".cards.todo");
+/* const todoCards = document.querySelector(".cards.todo");
 const pendingCards = document.querySelector(".cards.pending");
 const completedCards = document.querySelector(".cards.completed");
-
+ */ 
 function fillUpTaskBoxes(columnId) {
     let taxBoxCardsContent = "";
     try {
@@ -31,14 +29,37 @@ function fillUpTaskBoxes(columnId) {
     return taxBoxCardsContent;
 }
 
+console.log(Kanban.getAllTasks());
+console.log("Fetching the data");
+const todoCards = document.querySelector(".cards.todo");
+const pendingCards = document.querySelector(".cards.pending");
+const completedCards = document.querySelector(".cards.completed");
 
-todoCards.innerHTML = fillUpTaskBoxes(0);
-pendingCards.innerHTML = fillUpTaskBoxes(1);
-completedCards.innerHTML = fillUpTaskBoxes(2);
 
-//Kanban.deletTask(63861);
-//console.log("second delete");
-Kanban.deletTask(15523);
-//Kanban.insertTasks(0, "Leslie Feist concerts");
+todoCards.innerHTML = "";
+pendingCards.innerHTML = "";
+completedCards.innerHTML = "";
 
-//console.log(todoCards.innerHTML);
+const taskbox = [todoCards, pendingCards, completedCards];
+
+console.log(Kanban.getAllTasks()[0]);
+
+function addTask(task, index) {
+        taskbox[index].innerHTML += `<form class="card" draggable="true">
+             <input type="text" name="task" autocomplete="off" disabled="disabled" value="${task.content}">
+             <div>
+                <span class="task-id">${task.taskId}</span>
+                <span>
+                   <button class="bi bi-pencil edit" data-id=""></button>
+                   <button class="bi bi-check-lg update hide" data-id=""></button>
+                   <button class="bi bi-trash3 delete" data-id=""></button>
+                </span>
+             </div>
+            </form>`
+}
+
+Kanban.getAllTasks().forEach((tasks, index) => {
+            tasks.forEach(task => {
+                addTask(task, index); 
+   });
+});

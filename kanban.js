@@ -31,13 +31,34 @@ export default class Kanban {
     }
 
     static updateTask(taskId, updatedInformation) {
-
+        const data = read();
+    
+        function findColumnTask(){
+            for(const column of data) {
+                let task = column.tasks.find((element) => {
+                    return element.taskId == taskId
+                });
+                if (task) {
+                    return[task, column];
+                }
+            }
+            return [];
+        }
+        
+        const [task, currentColumn] = findColumnTask();
+        if (task) {
+            task.content = updatedInformation.content;
+            currentColumn.tasks.splice(currentColumn.tasks.indexOf(task),1);
+            const newColumn = data.find(column => column.columId == updatedInformation.columnId);
+            newColumn.tasks.push(task);
+            save(data);
+        }
     }
 
     static deletTask(taskId){
         const data = read();
         for(const column of data) {
-            let task = column.tasks.find((element, idx) => {
+            let task = column.tasks.find((element) => {
                 return element.taskId == taskId
             });
             if (task) {
@@ -59,7 +80,6 @@ function read() {
     if (!data) {
         return [{columId:0, tasks:[]}, {columnId:1, tasks: []}, {columnId:2, tasks:[]}];
     }
-
     return JSON.parse(data);
 }
 
@@ -67,3 +87,22 @@ function read() {
 function save(data) {
     localStorage.setItem("data", JSON.stringify(data));
 }
+
+
+
+/* todoCards.innerHTML = fillUpTaskBoxes(0);
+pendingCards.innerHTML = fillUpTaskBoxes(1);
+completedCards.innerHTML = fillUpTaskBoxes(2);
+ */
+//Kanban.deletTask(63861);
+//console.log("second delete");
+//Kanban.deletTask(15523);
+//Kanban.insertTasks(0, "Leslie Feist concerts");
+
+//Kanban.updateTask(123522, {
+//    columnId: 2,
+//   content: "Mr mr"
+//    }
+//);
+
+//console.log(todoCards.innerHTML);
