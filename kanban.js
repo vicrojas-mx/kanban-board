@@ -10,7 +10,7 @@ export default class Kanban {
         return data.tasks;
     }
 
-    static insertTasks(columnId, content){
+    static insertTask(columnId, content){
         const data = read();
         const column = data.find(column => {
             return column.columId == columnId
@@ -27,6 +27,7 @@ export default class Kanban {
         };
         column.tasks.push(task);
         save(data);
+        updateColumnCount();
         return task;
     }
 
@@ -47,11 +48,13 @@ export default class Kanban {
         
         const [task, currentColumn] = findColumnTask();
         if (task) {
-            task.content = updatedInformation.content;
+            console.log(task, updatedInformation.content);
             currentColumn.tasks.splice(currentColumn.tasks.indexOf(task),1);
+            task.content = updatedInformation.content;
             const newColumn = data.find(column => column.columId == updatedInformation.columnId);
             newColumn.tasks.push(task);
             save(data);
+            updateColumnCount();
         }
     }
 
@@ -66,10 +69,12 @@ export default class Kanban {
             }
         } 
         save(data);
+        updateColumnCount();
     }
 
     static getAllTasks() {
         const data = read() ;
+        updateColumnCount();
         return [data[0].tasks, data[1].tasks, data[2].tasks];
     }
 }
@@ -88,6 +93,16 @@ function save(data) {
     localStorage.setItem("data", JSON.stringify(data));
 }
 
+function updateColumnCount(){
+    const data = read();
+    const todoCount = document.querySelector(".todo");
+    const pendingCount = document.querySelector(".pending");
+    const completedCount = document.querySelector(".completed");
+
+    todoCount.textContent = data[0].tasks.length;
+    pendingCount.textContent = data[1].tasks.length;
+    completedCount.textContent = data[2].tasks.length; 
+}
 
 
 /* todoCards.innerHTML = fillUpTaskBoxes(0);

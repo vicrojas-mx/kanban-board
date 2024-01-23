@@ -6,13 +6,7 @@ const todoCards = document.querySelector(".cards.todo");
 const pendingCards = document.querySelector(".cards.pending");
 const completedCards = document.querySelector(".cards.completed");
 
-
-todoCards.innerHTML = "";
-pendingCards.innerHTML = "";
-completedCards.innerHTML = "";
-
 const taskbox = [todoCards, pendingCards, completedCards];
-
 console.log(Kanban.getAllTasks()[0]);
 
 function addTask(task, index) {
@@ -34,8 +28,63 @@ function addTask(task, index) {
     taskbox[index].appendChild(element);
 }
 
-Kanban.getAllTasks().forEach((tasks, index) => {
-            tasks.forEach(task => {
-                addTask(task, index); 
-   });
+clearScreenTasks();
+retrieveAllTasks();
+
+function clearScreenTasks() {
+    todoCards.innerHTML = "";
+    pendingCards.innerHTML = "";
+    completedCards.innerHTML = "";
+}
+
+function retrieveAllTasks() {
+    Kanban.getAllTasks().forEach((tasks, index) => {
+        tasks.forEach(task => {
+            addTask(task, index); 
+        });
+    });
+}
+
+const addForm = document.querySelectorAll(".add");
+addForm.forEach(form => {
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        if (form.task.value){
+            const task = Kanban.insertTask(form.submit.dataset.id, form.task.value.trim());
+            addTask(task, form.submit.dataset.id);
+            form.reset();    
+        }
+    })
 });
+
+
+taskbox.forEach((column, columnId) => {
+    column.addEventListener("click", event => {
+        event.preventDefault();
+
+        if (event.target.classList.contains("edit")){
+            event.target.classList.add("hide");
+            event.target.nextElementSibling.classList.remove("hide");
+            event.target.form.task.removeAttribute("disabled");
+        }
+
+        if (event.target.classList.contains("update")){
+            event.target.classList.add("hide");
+            event.target.previousElementSibling.classList.remove("hide");
+            event.target.form.task.setAttribute("disabled","disabled"); 
+            const taskId = event.target.dataset.id;
+            Kanban.updateTask(taskId, {
+                columnId: columnId,
+                content: event.target.form.task.value
+            });
+        }
+
+        if (event.target.classList.contains("delete")){
+            console.log("entro a delete");
+            const taskId = event.target.dataset.id;
+            console.log("deleting task", taskId);
+            event.target.form.remove()
+            Kanban.deletTask(taskId);
+        }
+    });
+})
