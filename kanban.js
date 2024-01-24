@@ -48,7 +48,6 @@ export default class Kanban {
         
         const [task, currentColumn] = findColumnTask();
         if (task) {
-            console.log(task, updatedInformation.content);
             currentColumn.tasks.splice(currentColumn.tasks.indexOf(task),1);
             task.content = updatedInformation.content;
             const newColumn = data.find(column => column.columId == updatedInformation.columnId);
