@@ -1,7 +1,7 @@
 export default class Kanban {
     static getTasks(columnId) {
         const data = read().find(column => {
-            return column.columId == columnId
+            return column.columnId == columnId
           }
         );
         if (!data) {
@@ -13,6 +13,7 @@ export default class Kanban {
     static insertTask(columnId, content){
         const data = read();
         const column = data.find(column => {
+            console.log(columnId, column);
             return column.columnId == columnId
           }
         );
@@ -50,7 +51,7 @@ export default class Kanban {
         if (task) {
             currentColumn.tasks.splice(currentColumn.tasks.indexOf(task),1);
             task.content = updatedInformation.content;
-            const newColumn = data.find(column => column.columId == updatedInformation.columnId);
+            const newColumn = data.find(column => column.columnId == updatedInformation.columnId);
             newColumn.tasks.push(task);
             save(data);
             updateColumnCount();
@@ -82,7 +83,7 @@ function read() {
     const data = localStorage.getItem("data");
 
     if (!data) {
-        return [{columId:0, tasks:[]}, {columnId:1, tasks: []}, {columnId:2, tasks:[]}];
+        return [{columnId:0, tasks:[]}, {columnId:1, tasks: []}, {columnId:2, tasks:[]}];
     }
     return JSON.parse(data);
 }
