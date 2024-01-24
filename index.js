@@ -1,13 +1,10 @@
 import Kanban from "./kanban.js";
 
-console.log(Kanban.getAllTasks());
-console.log("Fetching the data");
 const todoCards = document.querySelector(".cards.todo");
 const pendingCards = document.querySelector(".cards.pending");
 const completedCards = document.querySelector(".cards.completed");
 
 const taskbox = [todoCards, pendingCards, completedCards];
-console.log(Kanban.getAllTasks()[0]);
 
 function addTask(task, index) {
     const element = document.createElement("form");
@@ -80,9 +77,7 @@ taskbox.forEach((column, columnId) => {
         }
 
         if (event.target.classList.contains("delete")){
-            console.log("entro a delete");
             const taskId = event.target.dataset.id;
-            console.log("deleting task", taskId);
             event.target.form.remove()
             Kanban.deletTask(taskId);
         }

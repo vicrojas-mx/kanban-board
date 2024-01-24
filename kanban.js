@@ -13,7 +13,7 @@ export default class Kanban {
     static insertTask(columnId, content){
         const data = read();
         const column = data.find(column => {
-            return column.columId == columnId
+            return column.columnId == columnId
           }
         );
 
@@ -102,21 +102,3 @@ function updateColumnCount(){
     pendingCount.textContent = data[1].tasks.length;
     completedCount.textContent = data[2].tasks.length; 
 }
-
-
-/* todoCards.innerHTML = fillUpTaskBoxes(0);
-pendingCards.innerHTML = fillUpTaskBoxes(1);
-completedCards.innerHTML = fillUpTaskBoxes(2);
- */
-//Kanban.deletTask(63861);
-//console.log("second delete");
-//Kanban.deletTask(15523);
-//Kanban.insertTasks(0, "Leslie Feist concerts");
-
-//Kanban.updateTask(123522, {
-//    columnId: 2,
-//   content: "Mr mr"
-//    }
-//);
-
-//console.log(todoCards.innerHTML);
